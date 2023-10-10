@@ -88,6 +88,7 @@
     </div>
 
     <script>
+      console.log("test");
       const loginBtn = document.querySelector("#login-btn");
       const loginForm = document.querySelector("#login-form");
       const userData = document.querySelector("#user-data");
@@ -122,6 +123,7 @@
             // hide(loadingPage);
             const responseData = await response.json();
             if (responseData.data.user.role === "admin") {
+              console.log("Ulogovani ste kao admin");
               token = responseData.token;
               hide(loginForm);
               show(userData);
@@ -164,7 +166,8 @@
       async function fetchUserData(token) {
         try {
           const response = await fetch(
-            "https://arenagame.onrender.com/api/v1/users?fields=gameScore,firstName,lastName,email,phone",
+            "https://arenagame.onrender.com/api/v1/users",
+            //"https://arenagame.onrender.com/api/v1/users?fields=gameScore,firstName,lastName,email,phone",
             {
               method: "GET",
               headers: {
@@ -176,9 +179,11 @@
 
           if (!response.ok) {
             throw new Error("Network response was not ok");
+            console.log(response);
           }
 
           const responseData = await response.json();
+          console.log(responseData);
           const usersData = responseData.users;
 
           console.log(usersData);
@@ -235,6 +240,7 @@
 
           if (!response.ok) {
             throw new Error("Network response was not ok");
+            console.log(response);
           }
 
           const responseData = await response.json();
