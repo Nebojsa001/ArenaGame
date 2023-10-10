@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Arena Admin Panel</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <link rel="stylesheet" href="css/orientation_utils.css" type="text/css" />
+    <link rel="stylesheet" href="css/ios_fullscreen.css" type="text/css" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="/sprites/arena-icon.ico"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,minimal-ui"
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- pfd -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+      integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body ondragstart="return false;" ondrop="return false;">
+    <div id="loading-page" class="loading-page">
+      <div style="padding: 30px 0">
+        <img
+          src="https://arenacloudtv.com//shared/assets/images/logo.svg"
+          width="128"
+        />
+      </div>
+      <form action="" id="login-form">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="marko.markovic@gmail.com"
+          />
+          <div id="error-message" class="error-message"></div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Vaša lozinka"
+          />
+        </div>
+        <button id="login-btn" type="button">Uloguj se</button>
+      </form>
+      <div class="user-data" id="user-data" style="display: none">
+        <div class="arena-btn-container">
+          <button id="show-all" class="login-btn" type="button">
+            Prikazi sve igrače i preuzmi PDF
+          </button>
+          <button id="show-share" class="login-btn" type="button">
+            Prikaži sve igraće koji su podelili i preuzmi PDF
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="user-table" id="user-table">
+            <thead>
+              <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>E-mail</th>
+                <th>Br. telefona</th>
+                <th>Game Score</th>
+              </tr>
+            </thead>
+            <tbody id="user-table-body">
+              <!-- Ovde će biti dinamički generisani podaci korisnika -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const loginBtn = document.querySelector("#login-btn");
+      const loginForm = document.querySelector("#login-form");
+      const userData = document.querySelector("#user-data");
+      const showAll = document.querySelector("#show-all");
+      const showShare = document.querySelector("#show-share");
+      let token;
+      document
+        .querySelector("#login-btn")
+        .addEventListener("click", async function () {
+          const email = document.querySelector("#email").value;
+          const password = document.querySelector("#password").value;
+
+          const data = {
+            email: email,
+            password: password,
+          };
+          try {
+            const response = await fetch(
+              "http://localhost:3001/api/v1/users/login",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            // hide(loadingPage);
+            const responseData = await response.json();
+            if (responseData.data.user.role === "admin") {
+              token = responseData.token;
+              hide(loginForm);
+              show(userData);
+            } else {
+              alert("Nemate ovlaštenja za pristup");
+            }
+          } catch (error) {
+            console.error("Fetch error:", error);
+            alert("Proverite email ili password");
+          }
+        });
+
+      //funkcije
+      const hide = (el) => {
+        el.classList.remove("visible");
+        el.classList.add("hide");
+      };
+
+      const show = (el) => {
+        el.classList.add("visible");
+        el.classList.remove("hide");
+      };
+
+      showAll.addEventListener("click", async function () {
+        await fetchUserData(token);
+      });
+
+      showShare.addEventListener("click", async function () {
+        await fetchUserDataShare(token);
+      });
+      //generisanje pdf-a
+      function generatePDF(fileName) {
+        const element = document.getElementById("user-table");
+        const pdfOptions = {
+          filename: `${fileName}.pdf`, // Postavite ime dokumenta ovde
+        };
+        html2pdf().from(element).set(pdfOptions).save();
+      }
+      //ispis svih korisnika
+      async function fetchUserData(token) {
+        try {
+          const response = await fetch(
+            "http://localhost:3001/api/v1/users?fields=gameScore,firstName,lastName,email,phone",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const responseData = await response.json();
+          const usersData = responseData.users;
+
+          console.log(usersData);
+
+          /////////////// formatiranje podataka i smijestanje u clipboard ////////////////////////
+          const formattedData = usersData.map((user) => {
+            return `Ime: ${user.firstName}, Prezime: ${
+              user.lastName
+            }, E-mail: ${user.email}, Br. telefona: ${
+              user.phone
+            }, Game Score: ${user.gameScore || ""}`;
+          });
+          const dataToCopy = formattedData.join("\n");
+          await navigator.clipboard.writeText(dataToCopy);
+          alert("Podaci korisnika su kopirani u clipboard.");
+          ////////////// formatiranje i smijestanje zavrseno /////////////////////////
+
+          const tableBody = document.getElementById("user-table-body");
+          tableBody.innerHTML = ""; //prazni tabelu
+          // Kreirajte redove za svakog korisnika i dodajte ih u tabelu
+          usersData.forEach((user) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
+        <td>${user.email}</td>
+        <td>${user.phone}</td>
+        <td>${user.gameScore || ""}</td>
+      `;
+            tableBody.appendChild(row);
+          });
+          //pozivamo funkciju i dodjeljujemo ime nakon unosa svih podataka
+          generatePDF("ArenaGame_SviKorisnici");
+        } catch (error) {
+          console.error(
+            "Greška prilikom dohvatanja podataka sa API-ja:",
+            error
+          );
+        }
+      }
+
+      async function fetchUserDataShare(token) {
+        try {
+          const response = await fetch(
+            "http://localhost:3001/api/v1/users?socMediaShare=true&fields=firstName,lastName,email,phone,gameScore,socMediaShare",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const responseData = await response.json();
+          const usersData = responseData.users;
+
+          const tableBody = document.getElementById("user-table-body");
+          tableBody.innerHTML = ""; //prazni tabelu
+          // Kreirajte redove za svakog korisnika i dodajte ih u tabelu
+          usersData.forEach((user) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
+        <td>${user.email}</td>
+        <td>${user.phone}</td>
+        <td>${user.gameScore || ""}</td>
+      `;
+            tableBody.appendChild(row);
+          });
+          generatePDF("ArenaGame_Share_Korisnici");
+        } catch (error) {
+          console.error(
+            "Greška prilikom dohvatanja podataka sa API-ja:",
+            error
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

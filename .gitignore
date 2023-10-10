@@ -1,0 +1,30 @@
+# Ignorisanje direktorijuma node_modules, gde se nalaze instalirani moduli
+node_modules/
+
+# Ignorisanje fajla sa logovima i lokalnim konfiguracijama
+npm-debug.log
+.env
+
+# Ignorisanje generisanih fajlova i direktorijuma
+dist/
+coverage/
+
+# Ignorisanje fajla sa zavisnostima
+package-lock.json
+yarn.lock
+
+# Ignorisanje direktorijuma sa generisanim dokumentacijama
+docs/
+
+# Ignorisanje fajlova koji se generišu tokom razvoja
+*.log
+*.bak
+*.swp
+
+# Ignorisanje fajlova sa privremenim ekstenzijama
+*.tmp
+*.temp
+
+# Ignorisanje direktorijuma sa korisničkim konfiguracijama
+.vscode/
+.idea/

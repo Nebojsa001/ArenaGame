@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Arena Cloud | Nagradna igra</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <link rel="stylesheet" href="css/orientation_utils.css" type="text/css" />
+    <link rel="stylesheet" href="css/ios_fullscreen.css" type="text/css" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="/sprites/arena-icon.ico"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,minimal-ui"
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/easeljs-NEXT.min.js"></script>
+    <script type="text/javascript" src="js/tweenjs.js"></script>
+    <script type="text/javascript" src="js/screenfull.js"></script>
+    <script type="text/javascript" src="js/howler.min.js"></script>
+    <script type="text/javascript" src="js/platform.js"></script>
+    <script type="text/javascript" src="js/ios_fullscreen.js"></script>
+    <script type="text/javascript" src="js/ctl_utils.js"></script>
+    <script type="text/javascript" src="js/sprite_lib.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/CLang.js"></script>
+    <script type="text/javascript" src="js/CPreloader.js"></script>
+    <script type="text/javascript" src="js/CMain.js"></script>
+    <script type="text/javascript" src="js/CTextButton.js"></script>
+    <script type="text/javascript" src="js/CToggle.js"></script>
+    <script type="text/javascript" src="js/CGfxButton.js"></script>
+    <script type="text/javascript" src="js/CMenu.js"></script>
+    <script type="text/javascript" src="js/CGame.js"></script>
+    <script type="text/javascript" src="js/CInterface.js"></script>
+    <script type="text/javascript" src="js/cannon.js"></script>
+    <script type="text/javascript" src="js/cannon.demo.js"></script>
+    <script type="text/javascript" src="js/CBall.js"></script>
+    <script type="text/javascript" src="js/CScenario.js"></script>
+    <script type="text/javascript" src="js/Three.js"></script>
+    <script type="text/javascript" src="js/Detector.js"></script>
+    <script type="text/javascript" src="js/smoothie.js"></script>
+    <script type="text/javascript" src="js/Stats.js"></script>
+    <script type="text/javascript" src="js/TrackballControls.js"></script>
+    <script type="text/javascript" src="js/dat.gui.js"></script>
+    <script type="text/javascript" src="js/CAreYouSurePanel.js"></script>
+    <script type="text/javascript" src="js/CCreditsPanel.js"></script>
+    <script type="text/javascript" src="js/CPause.js"></script>
+    <script type="text/javascript" src="js/CGoalKeeper.js"></script>
+    <script type="text/javascript" src="js/CStartBall.js"></script>
+    <script type="text/javascript" src="js/CVector2.js"></script>
+    <script type="text/javascript" src="js/CPlayer.js"></script>
+    <script type="text/javascript" src="js/CScoreBoard.js"></script>
+    <script type="text/javascript" src="js/CRollingScore.js"></script>
+    <script type="text/javascript" src="js/CLaunchBoard.js"></script>
+    <script type="text/javascript" src="js/CHandSwipeAnim.js"></script>
+    <script type="text/javascript" src="js/CHelpText.js"></script>
+    <script type="text/javascript" src="js/CGoal.js"></script>
+    <script type="text/javascript" src="js/CCTLText.js"></script>
+  </head>
+  <body ondragstart="return false;" ondrop="return false;">
+    <div id="loading-page" class="loading-page">
+      <div style="padding: 30px 0">
+        <img
+          src="https://arenacloudtv.com//shared/assets/images/logo.svg"
+          width="128"
+        />
+      </div>
+      <form action="">
+        <div class="form-group">
+          <label for="ime">Ime</label>
+          <input type="text" id="ime" name="ime" required placeholder="Marko" />
+        </div>
+        <div class="form-group">
+          <label for="prezime">Prezime</label>
+          <input
+            type="text"
+            id="prezime"
+            name="prezime"
+            required
+            placeholder="Marković"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="marko.markovic@gmail.com"
+          />
+        </div>
+        <div class="form-group">
+          <label for="telefon">Broj telefona</label>
+          <input
+            type="tel"
+            id="telefon"
+            name="telefon"
+            required
+            placeholder="+381 54 234 2342"
+          />
+        </div>
+        <div
+          class="form-group"
+          style="display: flex; gap: 4px; align-items: center"
+        >
+          <input
+            style="margin: 0; margin-bottom: 5px"
+            type="checkbox"
+            id="potvrda"
+            name="potvrda"
+            required
+            checked
+          />
+          <a href="#" style="width: 100%; text-decoration: none">
+            <label for="potvrda">Prihvatam uslove</label></a
+          >
+        </div>
+        <button id="play-btn" type="button">Start</button>
+      </form>
+    </div>
+
+    <!-- score -->
+    <div
+      id="score-page"
+      style="
+        display: none;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url('/sprites/backgrounds/stadium.jpg') center center no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      "
+    >
+      <div
+        style="
+          padding: 30px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 36%;
+        "
+      >
+        <img
+          style="padding-bottom: 25px"
+          src="https://arenacloudtv.com//shared/assets/images/logo.svg"
+          width="128"
+        />
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <h1 style="font-size: large">
+            Da li si siguran da želiš prekinuti igricu? Trenutno se nalaziš na
+            <br /><span id="player-position" style="color: #08d5f9"
+              >učitavanje...</span
+            >
+          </h1>
+          <h1 style="font-size: larger">
+            <span style="color: red">NAPOMENA</span> : Samo jednom je moguće
+            igrati!
+          </h1>
+          <div style="width: 40%">
+            <button id="close-score" style="margin-bottom: 10px">
+              Nastavi sa igrom
+            </button>
+            <button id="next-to-share">Dalje</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- share page -->
+
+    <div
+      id="share-page"
+      style="
+        display: none;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url('/sprites/backgrounds/stadium.jpg') center center no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      "
+    >
+      <div
+        style="
+          padding: 30px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 36%;
+        "
+      >
+        <img
+          src="https://scontent.fbeg5-1.fna.fbcdn.net/v/t1.15752-9/384541963_1009601176971986_1745285231630216769_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=Jf_kx99pDS8AX-jm0wC&_nc_ht=scontent.fbeg5-1.fna&oh=03_AdQkKhK8djV7TCPZNa2HVxSUOUyCfhZPUUTVUgz2RDt_kQ&oe=654C8129"
+          style="width: 40%; height: 20"
+        />
+        <img
+          style="padding-bottom: 25px"
+          src="https://arenacloudtv.com//shared/assets/images/logo.svg"
+          width="128"
+        />
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div style="width: 100%">
+            <h1 style="font-size: large">
+              Da učestvuješ u nagradnoj igri potrebno je podeliti na
+              <br />
+              društvenim mrežama
+            </h1>
+            <a
+              style="text-decoration: none"
+              href="https://www.facebook.com/sharer/sharer.php?u=https://www.facebook.com/photo/?fbid=912483010308259&set=a.632638371626059"
+            >
+              <button
+                id="close-score facebook-btn"
+                style="margin-bottom: 10px"
+                class="facebook"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-facebook"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"
+                  />
+                </svg>
+                Podeli na Facebook-u
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="
+        position: fixed;
+        background-color: transparent;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+      "
+    ></div>
+    <script>
+      const playBtn = document.querySelector("#play-btn");
+      const loadingPage = document.querySelector("#loading-page");
+      const closeScore = document.querySelector("#close-score");
+      const nextToShare = document.querySelector("#next-to-share");
+      const scorePage = document.querySelector("#score-page");
+      const sharePage = document.querySelector("#share-page");
+      const facebookBtn = document.querySelector(".facebook");
+      let brisemo; //brisi
+      let token;
+      const hide = (el) => {
+        el.classList.remove("visible");
+        el.classList.add("hide");
+      };
+      closeScore.addEventListener("click", () => hide(scorePage));
+      nextToShare.addEventListener("click", () => {
+        scorePage.classList.remove("visible");
+        scorePage.classList.add("hide");
+        sharePage.classList.add("visible");
+      });
+
+      document
+        .querySelector("#play-btn")
+        .addEventListener("click", async function () {
+          const ime = document.querySelector("#ime").value;
+          const prezime = document.querySelector("#prezime").value;
+          const email = document.querySelector("#email").value;
+          const telefon = document.querySelector("#telefon").value;
+          let phone = telefon.replace(/\s/g, "");
+          const potvrda = document.querySelector("#potvrda").checked;
+
+          hide(loadingPage); //pomjeriti dole
+
+          if (!potvrda) {
+            alert("Prihvati uslove da bi igrao igricu");
+            return;
+          }
+          if (!phone.includes("+381")) {
+            phone = `+381${phone}`;
+          }
+
+          const data = {
+            firstName: ime,
+            lastName: prezime,
+            email: email,
+            phone: phone,
+          };
+          console.log(data);
+          brisemo = data;
+
+          try {
+            const response = await fetch(
+              "http://localhost:3001/api/v1/users/store-data",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              }
+            );
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            // hide(loadingPage);
+            hide(loadingPage);
+            const responseData = await response.json();
+            token = responseData.token;
+            // Ovdje možete obraditi responseData
+          } catch (err) {
+            alert("Email i broj telefona moraju da budu unikatni i tačni!");
+          }
+        });
+
+      facebookBtn.addEventListener("click", async () => {
+        updateShare(token);
+      });
+
+      //api funkcije
+      async function updateShare(token) {
+        try {
+          const response = await fetch(
+            "http://localhost:3001/api/v1/users/update-share",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        } catch (error) {
+          console.error(
+            "Greška prilikom dohvatanja podataka sa API-ja:",
+            error
+          );
+        }
+      }
+    </script>
+    <script>
+      $(document).ready(function () {
+        var oMain = new CMain({
+          area_goal: [
+            { id: 0, probability: 100 },
+            { id: 1, probability: 80 },
+            { id: 2, probability: 60 },
+            { id: 3, probability: 80 },
+            { id: 4, probability: 100 },
+            { id: 5, probability: 75 },
+            { id: 6, probability: 60 },
+            { id: 7, probability: 50 },
+            { id: 8, probability: 60 },
+            { id: 9, probability: 75 },
+            { id: 10, probability: 80 },
+            { id: 11, probability: 65 },
+            { id: 12, probability: 70 },
+            { id: 13, probability: 65 },
+            { id: 14, probability: 80 },
+          ], //PROBABILITY AREA GOALS START TO LEFT UP TO RIGHT DOWN
+          //0  1  2  3  4
+          //5  6  7  8  9
+          //10 11 12 13 14
+          num_of_penalty: 15, //MAX NUMBER OF PENALTY FOR END GAME
+          multiplier_step: 0.1, //INCREASE MULTIPLIER EVERY GOAL
+          audio_enable_on_startup: false, //ENABLE/DISABLE AUDIO WHEN GAME STARTS
+          fullscreen: true, //SET THIS TO FALSE IF YOU DON'T WANT TO SHOW FULLSCREEN BUTTON
+          check_orientation: true, //SET TO FALSE IF YOU DON'T WANT TO SHOW ORIENTATION ALERT ON MOBILE DEVICES
+          num_levels_for_ads: 2, //NUMBER OF TURNS PLAYED BEFORE AD SHOWING //
+          //////// THIS FEATURE  IS ACTIVATED ONLY WITH CTL ARCADE PLUGIN.///////////////////////////
+          /////////////////// YOU CAN GET IT AT: /////////////////////////////////////////////////////////
+          // http://codecanyon.net/item/ctl-arcade-wordpress-plugin/13856421 ///////////
+        });
+        $(oMain).on("start_session", function (evt) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeStartSession();
+          }
+        });
+
+        $(oMain).on("end_session", function (evt) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeEndSession();
+          }
+        });
+
+        $(oMain).on("start_level", function (evt, iLevel) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeStartLevel({ level: iLevel });
+          }
+        });
+
+        $(oMain).on("restart_level", function (evt, iLevel) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeRestartLevel({ level: iLevel });
+          }
+        });
+
+        $(oMain).on("end_level", function (evt, iLevel) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeEndLevel({ level: iLevel });
+          }
+        });
+
+        $(oMain).on("save_score", function (evt, iScore, szMode) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeSaveScore({ score: iScore, mode: szMode });
+          }
+        });
+
+        $(oMain).on("show_interlevel_ad", function (evt) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeShowInterlevelAD();
+          }
+        });
+
+        $(oMain).on("share_event", function (evt, iScore) {
+          if (getParamValue("ctl-arcade") === "true") {
+            parent.__ctlArcadeShareEvent({
+              img: TEXT_SHARE_IMAGE,
+              title: TEXT_SHARE_TITLE,
+              msg: TEXT_SHARE_MSG1 + iScore + TEXT_SHARE_MSG2,
+              msg_share: TEXT_SHARE_SHARE1 + iScore + TEXT_SHARE_SHARE1,
+            });
+          }
+        });
+
+        if (isIOS()) {
+          setTimeout(function () {
+            sizeHandler();
+          }, 200);
+        } else {
+          sizeHandler();
+        }
+      });
+    </script>
+
+    <div class="check-fonts">
+      <p class="check-font-1">test 1</p>
+    </div>
+
+    <canvas id="canvas" class="ani_hack" width="1360" height="640"> </canvas>
+    <div data-orientation="landscape" class="orientation-msg-container">
+      <p class="orientation-msg-text">Rotiraj svoj telefon!</p>
+    </div>
+    <div
+      id="block_game"
+      style="
+        position: fixed;
+        background-color: transparent;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        display: none;
+      "
+    ></div>
+  </body>
+  <script type="text/javascript" src="js/CWinPanel.js"></script>
+</html>
