@@ -106,7 +106,7 @@
           };
           try {
             const response = await fetch(
-              "http://localhost:3001/api/v1/users/login",
+              "https://arenagame.onrender.com/api/v1/users/login",
               {
                 method: "POST",
                 headers: {
@@ -164,7 +164,7 @@
       async function fetchUserData(token) {
         try {
           const response = await fetch(
-            "http://localhost:3001/api/v1/users?fields=gameScore,firstName,lastName,email,phone",
+            "https://arenagame.onrender.com/api/v1/users?fields=gameScore,firstName,lastName,email,phone",
             {
               method: "GET",
               headers: {
@@ -223,7 +223,7 @@
       async function fetchUserDataShare(token) {
         try {
           const response = await fetch(
-            "http://localhost:3001/api/v1/users?socMediaShare=true&fields=firstName,lastName,email,phone,gameScore,socMediaShare",
+            "https://arenagame.onrender.com/api/v1/users?socMediaShare=true&fields=firstName,lastName,email,phone,gameScore,socMediaShare",
             {
               method: "GET",
               headers: {

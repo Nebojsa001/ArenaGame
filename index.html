@@ -309,7 +309,7 @@
           let phone = telefon.replace(/\s/g, "");
           const potvrda = document.querySelector("#potvrda").checked;
 
-          hide(loadingPage); //pomjeriti dole
+          //hide(loadingPage); //pomjeriti dole
 
           if (!potvrda) {
             alert("Prihvati uslove da bi igrao igricu");
@@ -330,7 +330,7 @@
 
           try {
             const response = await fetch(
-              "http://localhost:3001/api/v1/users/store-data",
+              "https://arenagame.onrender.com/api/v1/users/store-data",
               {
                 method: "POST",
                 headers: {
@@ -360,7 +360,7 @@
       async function updateShare(token) {
         try {
           const response = await fetch(
-            "http://localhost:3001/api/v1/users/update-share",
+            "https://arenagame.onrender.com/api/v1/users/update-share",
             {
               method: "POST",
               headers: {
