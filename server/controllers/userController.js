@@ -54,12 +54,16 @@ exports.getAllUsers = async (req, res) => {
       .limitFields();
     //let kveri = await features.query;
     const users = await features.query;
+    // res.status(200).json({
+    //   status: "success",
+    //   result: users.length,
+    //   users,
+    // });
     res.status(200).json({
       status: "success",
-      result: users.length,
-      users,
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "fail",
       message: err,
