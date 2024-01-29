@@ -101,6 +101,7 @@ exports.createUser = async (req, res) => {
       lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
+      password: req.body.password,
     });
 
     createSendToken(newUser, 201, res);
@@ -114,8 +115,9 @@ exports.createUser = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
   //1
-  if (!email || !password) {
+  if (!email && !password) {
     return res.status(400).json({
       status: "fail",
       message: "Proveri email ili password1",
@@ -123,6 +125,8 @@ exports.login = async (req, res) => {
   }
   //2
   const user = await User.findOne({ email }).select("+password");
+  console.log(user);
+  console.log(await user.correctPassword(password, user.password));
   if (!user || !(await user.correctPassword(password, user.password))) {
     return res.status(400).json({
       status: "fail",

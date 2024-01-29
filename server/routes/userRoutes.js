@@ -26,5 +26,5 @@ router
     userController.restrictTo("admin"),
     userController.getAllUsers
   );
-module.exports = router;
 router.route("/admin-login").post(userController.adminLogin);
+module.exports = router;
