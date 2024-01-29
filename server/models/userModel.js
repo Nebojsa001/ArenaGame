@@ -54,9 +54,9 @@ const userSchema = new mongoose.Schema({
 });
 
 //ova linija koda treba samo kad zelimo dodati admina i ne koristi se kod obicnih korisnika bez sifre
-userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
-});
+// userSchema.pre("save", async function (next) {
+//   this.password = await bcrypt.hash(this.password, 12);
+// });
 userSchema.methods.correctPassword = async function (
   // PROVJERA PASSWORD
   candidatePassword,

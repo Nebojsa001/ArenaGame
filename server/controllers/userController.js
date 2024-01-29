@@ -101,7 +101,7 @@ exports.createUser = async (req, res) => {
       lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
-      password: req.body.password,
+      //password: req.body.password, //dodaj samo kad kreiras admina
     });
 
     createSendToken(newUser, 201, res);
