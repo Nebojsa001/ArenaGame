@@ -135,7 +135,7 @@
         top: 0;
         z-index: 1;
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-          url('/sprites/backgrounds/stadium.jpg') center center no-repeat;
+          url('./sprites/backgrounds/stadium.jpg') center center no-repeat;
         background-size: cover;
         width: 100%;
         height: 100vh;
@@ -197,7 +197,7 @@
         top: 0;
         z-index: 1;
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-          url('/sprites/backgrounds/stadium.jpg') center center no-repeat;
+          url('./sprites/backgrounds/stadium.jpg') center center no-repeat;
         background-size: cover;
         width: 100%;
         height: 100vh;
@@ -216,10 +216,10 @@
           width: 36%;
         "
       >
-        <img
+        <!-- <img
           src="https://scontent.fbeg5-1.fna.fbcdn.net/v/t1.15752-9/384541963_1009601176971986_1745285231630216769_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=Jf_kx99pDS8AX-jm0wC&_nc_ht=scontent.fbeg5-1.fna&oh=03_AdQkKhK8djV7TCPZNa2HVxSUOUyCfhZPUUTVUgz2RDt_kQ&oe=654C8129"
           style="width: 40%; height: 20"
-        />
+        /> -->
         <img
           style="padding-bottom: 25px"
           src="https://arenacloudtv.com//shared/assets/images/logo.svg"
@@ -330,7 +330,7 @@
 
           try {
             const response = await fetch(
-              "https://arenagame.onrender.com/api/v1/users/store-data",
+              "https://arena-game-3ksv.onrender.com/api/v1/users/store-data",
               {
                 method: "POST",
                 headers: {
@@ -360,7 +360,7 @@
       async function updateShare(token) {
         try {
           const response = await fetch(
-            "https://arenagame.onrender.com/api/v1/users/update-share",
+            "https://arena-game-3ksv.onrender.com/api/v1/users/update-share",
             {
               method: "POST",
               headers: {
