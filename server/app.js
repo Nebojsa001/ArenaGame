@@ -6,7 +6,7 @@ const userRouter = require("./routes/userRoutes");
 
 const corsOptions = {
   //origin: "https://arena-game-penalty.netlify.app",
-  origin: "https://arena-game-penalty.netlify.app",
+  origin: "http://127.0.0.1:5500",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };

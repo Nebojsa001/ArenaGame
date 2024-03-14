@@ -261,13 +261,13 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        "https://arena-game-3ksv.onrender.com/api/v1/users/update-score",
+        "http://localhost:3001/api/v1/users/update-score",
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, gameScore }),
+          body: JSON.stringify({ email, gameScore, counter }),
         }
       );
       if (response.status === 200) {
@@ -282,7 +282,7 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        `https://arena-game-3ksv.onrender.com/api/v1/users/player-position/${playerId}`,
+        `http://localhost:3001/api/v1/users/player-position/${playerId}`,
         {
           method: "GET",
           headers: {
@@ -292,7 +292,7 @@ function CWinPanel(oSpriteBg) {
       );
       if (response.status === 200) {
         const data = await response.json();
-        playerPositionIndex.innerHTML = `${data.playerPosition}. mjestu`;
+        playerPositionIndex.innerHTML = `${data.playerPosition}. mestu`;
       } else {
         console.error("Server error:", response.statusText);
       }

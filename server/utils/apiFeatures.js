@@ -22,7 +22,7 @@ class APIFeatures {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort("-gameScore");
+      this.query = this.query.sort({ gameScore: -1, playingTime: 1 });;
     }
     return this;
   }

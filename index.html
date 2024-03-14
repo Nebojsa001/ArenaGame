@@ -74,7 +74,8 @@
       <form action="">
         <div class="form-group">
           <label for="ime">Ime</label>
-          <input type="text" id="ime" name="ime" required placeholder="Marko" />
+          <input type="text" id="ime" name="ime" required />
+          <span class="error-message">Polje ime je obavezno.</span>
         </div>
         <div class="form-group">
           <label for="prezime">Prezime</label>
@@ -83,8 +84,8 @@
             id="prezime"
             name="prezime"
             required
-            placeholder="Marković"
           />
+          <span class="error-message">Polje ime je obavezno.</span>
         </div>
         <div class="form-group">
           <label for="email">E-mail</label>
@@ -93,8 +94,8 @@
             id="email"
             name="email"
             required
-            placeholder="marko.markovic@gmail.com"
           />
+          <span class="error-message">Polje ime je obavezno.</span>
         </div>
         <div class="form-group">
           <label for="telefon">Broj telefona</label>
@@ -104,7 +105,9 @@
             name="telefon"
             required
             placeholder="+381 54 234 2342"
+            value="+38"
           />
+          <span class="error-message">Polje ime je obavezno.</span>
         </div>
         <div
           class="form-group"
@@ -151,7 +154,7 @@
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          width: 36%;
+          width: 100%;
         "
       >
         <img
@@ -175,7 +178,7 @@
           </h1>
           <h1 style="font-size: larger">
             <span style="color: red">NAPOMENA</span> : Samo jednom je moguće
-            igrati!
+            igrati! <br> Ukoliko imaš isti broj bodova, vreme utiče na tvoje mesto
           </h1>
           <div style="width: 40%">
             <button id="close-score" style="margin-bottom: 10px">
@@ -213,7 +216,7 @@
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          width: 36%;
+          width: 100%;
         "
       >
         <!-- <img
@@ -278,6 +281,7 @@
         height: 100%;
       "
     ></div>
+    <script src="js/CMenu.js"></script>
     <script>
       const playBtn = document.querySelector("#play-btn");
       const loadingPage = document.querySelector("#loading-page");
@@ -286,7 +290,6 @@
       const scorePage = document.querySelector("#score-page");
       const sharePage = document.querySelector("#share-page");
       const facebookBtn = document.querySelector(".facebook");
-      let brisemo; //brisi
       let token;
       const hide = (el) => {
         el.classList.remove("visible");
@@ -294,6 +297,7 @@
       };
       closeScore.addEventListener("click", () => hide(scorePage));
       nextToShare.addEventListener("click", () => {
+        stopCounting();
         scorePage.classList.remove("visible");
         scorePage.classList.add("hide");
         sharePage.classList.add("visible");
@@ -310,14 +314,30 @@
           const potvrda = document.querySelector("#potvrda").checked;
 
           //hide(loadingPage); //pomjeriti dole
+    if (!ime) {
+      markAsRequired('ime');
+      return false;
+    }
 
-          if (!potvrda) {
-            alert("Prihvati uslove da bi igrao igricu");
-            return;
-          }
-          if (!phone.includes("+381")) {
-            phone = `+381${phone}`;
-          }
+    if (!prezime) {
+      markAsRequired('prezime');
+      return false;
+    }
+
+    if (!email) {
+      markAsRequired('email');
+      return false;
+    }
+
+    if (!telefon) {
+      markAsRequired('telefon');
+      return false;
+    }
+
+    if (!potvrda) {
+      alert("Prihvati uslove da bi igrao igricu");
+      return;
+    }
 
           const data = {
             firstName: ime,
@@ -325,12 +345,10 @@
             email: email,
             phone: phone,
           };
-          console.log(data);
-          brisemo = data;
 
           try {
             const response = await fetch(
-              "https://arena-game-3ksv.onrender.com/api/v1/users/store-data",
+              "http://localhost:3001/api/v1/users/store-data",
               {
                 method: "POST",
                 headers: {
@@ -360,7 +378,7 @@
       async function updateShare(token) {
         try {
           const response = await fetch(
-            "https://arena-game-3ksv.onrender.com/api/v1/users/update-share",
+            "http://localhost:3001/api/v1/users/update-share",
             {
               method: "POST",
               headers: {
@@ -376,6 +394,12 @@
           );
         }
       }
+
+      //funckija za validaciju forme
+      function markAsRequired(fieldId) {
+    let field = document.getElementById(fieldId);
+    field.classList.add('required');
+  }
     </script>
     <script>
       $(document).ready(function () {
