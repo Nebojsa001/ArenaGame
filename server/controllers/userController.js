@@ -52,8 +52,7 @@ exports.getAllUsers = async (req, res) => {
       .filter()
       .sort()
       .limitFields();
-    let kveri = await features.query;
-    console.log(features);
+    //let kveri = await features.query;
     const users = await features.query;
     res.status(200).json({
       status: "success",
@@ -113,21 +112,6 @@ exports.createUser = async (req, res) => {
     });
   }
 };
-
-exports.deleteUsers = async(req,res)=>{
-  try{
-    await User.deleteMany({role: "user"})
-    res.status(202).json({
-      status: "success",
-      message: "Igraci uspešno obrisani"
-    })
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err,
-    });
-  }
-}
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -223,10 +207,10 @@ exports.updateWinner = async (req, res) => {
 
 exports.updateScore = async (req, res) => {
   try {
-    const { email, gameScore , counter} = req.body;
+    const { email, gameScore } = req.body;
     const user = await User.findOneAndUpdate(
       { email },
-      { $set: { gameScore, playingTime: counter } }
+      { $set: { gameScore } }
     );
 
     if (!user) {
@@ -295,24 +279,9 @@ exports.protect = async (req, res, next) => {
       message: "Uloguj se!",
     });
   }
-  // token verifikacija
-  try {
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    const currentUser = await User.findById(decoded.id);
-    req.user = currentUser;
-    next();
-  } catch (err) {
-    if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({
-        status: "fail",
-        message: "Vaš token je istekao.",
-      });
-    } else {
-      return res.status(401).json({
-        status: "fail",
-        message: "Neuspela verifikacija tokena.",
-      });
-    }
-  }
+  //token verif
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const currentUser = await User.findById(decoded.id);
+  req.user = currentUser;
+  next();
 };
-

@@ -25,9 +25,6 @@ router
     userController.protect,
     userController.restrictTo("admin"),
     userController.getAllUsers
-  ).delete(
-    userController.protect,
-    userController.restrictTo("admin"),
-    userController.deleteUsers)
+  );
 router.route("/admin-login").post(userController.adminLogin);
 module.exports = router;

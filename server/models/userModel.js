@@ -51,10 +51,6 @@ const userSchema = new mongoose.Schema({
     required: false,
     select: false,
   },
-  playingTime:{
-    type: Number,
-    required: false
-  }
 });
 
 //ova linija koda treba samo kad zelimo dodati admina i ne koristi se kod obicnih korisnika bez sifre
