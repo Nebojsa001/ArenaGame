@@ -261,7 +261,7 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/update-score",
+        "https://arena-game-3ksv.onrender.com/api/v1/users/update-score",
         {
           method: "PATCH",
           headers: {
@@ -282,7 +282,7 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/users/player-position/${playerId}`,
+        `https://arena-game-3ksv.onrender.com/api/v1/users/player-position/${playerId}`,
         {
           method: "GET",
           headers: {
