@@ -5,7 +5,8 @@ const app = express();
 const userRouter = require("./routes/userRoutes");
 
 const corsOptions = {
-  origin: "http://127.0.0.1:5500",
+  //origin: "http://127.0.0.1:5500",
+  origin: "https://arena-cloud-game.netlify.app",
   //origin: "https://arenacloudgame.netlify.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
