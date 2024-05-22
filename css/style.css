@@ -1,10 +1,10 @@
 @font-face {
   font-family: "HeadingNow56Bold";
   src: url("../fonts/HeadingNowTrial-56Bold.ttf"),
-       url("../fonts/HeadingNowTrial-56BoldItalic.ttf");
+    url("../fonts/HeadingNowTrial-56BoldItalic.ttf");
 }
 * {
-  font-family: 'HeadingNow56Bold';
+  font-family: "HeadingNow56Bold";
   text-align: center;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .login-btn {
-  font-family: 'HeadingNow56Bold';
+  font-family: "HeadingNow56Bold";
   margin-bottom: 4px;
 }
 
@@ -36,14 +36,15 @@ label {
   margin-bottom: 5px;
   color: #08d5f9;
   width: 100%;
-  font-family: 'HeadingNow56Bold';
+  font-family: "HeadingNow56Bold";
 }
 input[type="text"],
-input[type="password"]{
-  font-family: 'HeadingNow56Bold';
+input[type="password"] {
+  font-family: "HeadingNow56Bold";
 }
-input[type="tel"],input[type="email"] {
-  font-family:sans-serif;
+input[type="tel"],
+input[type="email"] {
+  font-family: sans-serif;
 }
 input[type="text"],
 input[type="email"],
@@ -90,7 +91,6 @@ button {
   border-radius: 25555px;
   font-size: 16px;
   cursor: pointer;
-  
 }
 
 button:hover {
@@ -119,6 +119,47 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+footer {
+  padding: 40px 20px;
+  display: flex;
+  width: 40%;
+  align-items: center;
+}
+
+footer div {
+  padding: 30px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+footer div svg {
+  margin-right: 20px;
+}
+
+footer div a {
+  color: white;
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 768px) {
+  footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+    padding: 20px 0;
+  }
+  hr {
+    display: none;
+  }
+  footer div {
+    padding: 10px 0;
+    justify-content: center;
+  }
+  footer div svg {
+    margin-right: 10px;
+  }
 }
 
 .instagram {

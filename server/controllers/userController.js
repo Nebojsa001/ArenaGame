@@ -125,8 +125,9 @@ exports.login = async (req, res) => {
   }
   //2
   const user = await User.findOne({ email }).select("+password");
+  console.log("eeee");
   console.log(user);
-  console.log(await user.correctPassword(password, user.password));
+  //console.log(await user.correctPassword(password, user.password));
   if (!user || !(await user.correctPassword(password, user.password))) {
     return res.status(400).json({
       status: "fail",
