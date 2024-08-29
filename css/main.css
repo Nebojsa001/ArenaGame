@@ -1,72 +1,87 @@
-root { 
-    display: block;
+root {
+  display: block;
 }
 
-body{
-    background-color: #000;
-    background-repeat: repeat-x;
-    background-position: top;
+body {
+  background-color: #000;
+  background-repeat: repeat-x;
+  background-position: top;
 }
 
-*, *:before, *:after {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-     
-input, input:before, input:after {
-    -webkit-user-select: initial;
-    -khtml-user-select: initial;
-    -moz-user-select: initial;
-    -ms-user-select: initial;
-    user-select: initial;
+*,
+*:before,
+*:after {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-::selection { background: transparent;color:inherit; }
-::-moz-selection { background: transparent;color:inherit; }
+input,
+input:before,
+input:after {
+  -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+}
 
-#canvas{
-    position: fixed;
+::selection {
+  background: transparent;
+  color: inherit;
+}
+::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
+#canvas {
+  position: fixed;
 }
 
 canvas {
-    image-rendering:-webkit-optimize-contrast;
-    -ms-interpolation-mode: nearest-neighbor;
-    -ms-touch-action: none;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+  -ms-touch-action: none;
 }
 
-.ani_hack{
-    -webkit-perspective: 1000;
-    -webkit-backface-visibility: hidden;
-    
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    outline: none;
-    -webkit-tap-highlight-color: transparent; /* mobile webkit */
+.ani_hack {
+  -webkit-perspective: 1000;
+  -webkit-backface-visibility: hidden;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent; /* mobile webkit */
 }
 
 /***************FONTS*******************/
 
-.check-fonts{
-        position: fixed;
-        opacity:0;
+.check-fonts {
+  position: fixed;
+  opacity: 0;
 }
 
-.check-font-1{
-        font-family: 'TradeGothic';
+.check-font-1 {
+  font-family: "TradeGothic";
 }
-
 
 @font-face {
-    font-family: 'TradeGothic';
-    src: url('TradeGothic-Bold.woff2') format('woff2'),
-        url('TradeGothic-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
+  font-family: "TradeGothic";
+  src: url("TradeGothic-Bold.woff2") format("woff2"),
+    url("TradeGothic-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.text-area ol li p {
+  font-size: large;
+  text-align: center;
+  margin-bottom: 10px;
 }

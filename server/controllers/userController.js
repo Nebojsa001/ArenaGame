@@ -51,8 +51,7 @@ exports.getAllUsers = async (req, res) => {
     const features = new APIFeatures(User.find(), req.query)
       .filter()
       .sort()
-      .limitFields();
-    //let kveri = await features.query;
+      .paginate();
     const users = await features.query;
     res.status(200).json({
       status: "success",
@@ -60,7 +59,28 @@ exports.getAllUsers = async (req, res) => {
       users,
     });
   } catch (err) {
-    console.log(err);
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+exports.getTopUsers = async (req, res) => {
+  try {
+    const features = new APIFeatures(User.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const users = await features.query;
+
+    res.status(200).json({
+      status: "success",
+      users,
+    });
+  } catch (err) {
     res.status(400).json({
       status: "fail",
       message: err,
@@ -115,7 +135,6 @@ exports.createUser = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
   //1
   if (!email && !password) {
     return res.status(400).json({
@@ -125,9 +144,6 @@ exports.login = async (req, res) => {
   }
   //2
   const user = await User.findOne({ email }).select("+password");
-  console.log("eeee");
-  console.log(user);
-  //console.log(await user.correctPassword(password, user.password));
   if (!user || !(await user.correctPassword(password, user.password))) {
     return res.status(400).json({
       status: "fail",
@@ -135,10 +151,6 @@ exports.login = async (req, res) => {
     });
   }
   createSendToken(user, 201, res);
-  // res.status(200).json({
-  //   status: "success",
-  //   message: "Uspešno ste se ulogovali",
-  // });
 };
 
 exports.adminLogin = async (req, res) => {
@@ -165,53 +177,14 @@ exports.adminLogin = async (req, res) => {
   }
 };
 
-exports.updateWinner = async (req, res) => {
-  try {
-    const email = req.body.email;
-    const user = await User.findOneAndUpdate({ email }, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    const winnerData = await User.findOne({ email: email }, "_id, name");
-    const userCode = winnerData._id;
-    const userName = winnerData.name;
-
-    //generisanje pug template
-    const templatePath = path.join(__dirname, "../templates/");
-    const compiledFunction = pug.compileFile(
-      path.join(templatePath, "arenaMailTemplate.pug")
-    );
-    const renderedTemplate = compiledFunction({ userCode, userName });
-
-    //mailer
-    const to = email;
-    const subject = "Arena Cloud Nagradna Igra";
-    const html = renderedTemplate;
-    const result = await sendEmail(to, subject, html);
-    if (result.success) {
-    } else {
-    }
-    //mailer end
-
-    res.status(200).json({
-      status: "okey",
-      userCode: userCode,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
-
 exports.updateScore = async (req, res) => {
   try {
-    const { email, gameScore } = req.body;
+    const gameScore = req.body.gameScore;
+    const counter = req.body.counter;
+    const email = req.user.email;
     const user = await User.findOneAndUpdate(
       { email },
-      { $set: { gameScore } }
+      { $set: { gameScore, counter } }
     );
 
     if (!user) {
@@ -236,8 +209,31 @@ exports.updateScore = async (req, res) => {
 exports.updateShare = async (req, res) => {
   try {
     const currentUser = req.user;
+    console.log(currentUser);
+
     currentUser.socMediaShare = true;
     await currentUser.save();
+
+    const userNickName = req.user.nickName;
+    const userName = req.user.firstName;
+
+    //generisanje pug template
+    const templatePath = path.join(__dirname, "../templates/");
+    const compiledFunction = pug.compileFile(
+      path.join(templatePath, "arenaMailTemplate.pug")
+    );
+    const renderedTemplate = compiledFunction({ userName, userNickName });
+
+    //mailer
+    const to = req.user.email;
+    const subject = "Arena Cloud Nagradna Igra";
+    const html = renderedTemplate;
+    const result = await sendEmail(to, subject, html);
+    if (result.success) {
+      console.log("radi");
+    } else {
+      console.log("nece");
+    }
 
     res.status(200).json({
       status: "success",
@@ -281,8 +277,15 @@ exports.protect = async (req, res, next) => {
     });
   }
   //token verif
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  const currentUser = await User.findById(decoded.id);
-  req.user = currentUser;
-  next();
+  try {
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const currentUser = await User.findById(decoded.id);
+    req.user = currentUser;
+    next();
+  } catch (err) {
+    res.status(401).json({
+      status: "fail",
+      message: "Token nije ispravan. Molimo, prijavite se ponovo.",
+    });
+  }
 };

@@ -1,0 +1,2 @@
+- kad se igra zavrsi napraviti dugme finish i restart
+- podijeli na Facebook i inst stanko salje vizual za desktop i fon

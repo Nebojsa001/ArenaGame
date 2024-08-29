@@ -258,21 +258,24 @@ function CWinPanel(oSpriteBg) {
     // s_oGame.onExit();
     const scorePage = document.querySelector("#score-page");
     scorePage.classList.add("visible");
+    console.log(token);
 
     try {
       const response = await fetch(
-        "https://arena-game-3ksv.onrender.com/api/v1/users/update-score",
+        "https://www.topicsplanet.com/api/v1/users/update-score",
         {
           method: "PATCH",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, gameScore, counter }),
+          body: JSON.stringify({ gameScore, counter }),
         }
       );
       if (response.status === 200) {
         const data = await response.json();
         playerId = data._id;
+        console.log(data);
       } else {
         console.error("Server error:", response.statusText);
       }
@@ -282,16 +285,19 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        `https://arena-game-3ksv.onrender.com/api/v1/users/player-position/${playerId}`,
+        `https://www.topicsplanet.com/api/v1/users/player-position/${playerId}`,
         {
           method: "GET",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data);
+        console.log(data.playerPosition);
         playerPositionIndex.innerHTML = `<span style="font-family: Arial, sans-serif;">${data.playerPosition}. </span> mestu`;
       } else {
         console.error("Server error:", response.statusText);

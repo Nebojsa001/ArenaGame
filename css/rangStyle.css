@@ -1,0 +1,49 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: url("../sprites/backgrounds/stadium.jpg") center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+.ranking-table {
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+}
+.ranking-table h2 {
+  text-align: center;
+}
+.ranking-table ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ranking-table li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.ranking-table li:last-child {
+  border-bottom: none;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

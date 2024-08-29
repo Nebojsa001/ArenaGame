@@ -8,9 +8,9 @@ router
   .route("/store-data")
   .post(userController.checkObjectCount, userController.createUser);
 
-router.route("/update-winner").patch(userController.updateWinner);
-
-router.route("/update-score").patch(userController.updateScore);
+router
+  .route("/update-score")
+  .patch(userController.protect, userController.updateScore);
 
 router.route("/login").post(userController.login);
 router
@@ -26,5 +26,7 @@ router
     userController.restrictTo("admin"),
     userController.getAllUsers
   );
+
+router.route("/top-users").get(userController.getTopUsers);
 router.route("/admin-login").post(userController.adminLogin);
 module.exports = router;

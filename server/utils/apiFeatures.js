@@ -22,18 +22,13 @@ class APIFeatures {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort("-gameScore");
+      this.query = this.query.sort("-gameScore counter");
     }
     return this;
   }
 
   limitFields() {
-    if (this.queryString.fields) {
-      const fields = this.queryString.fields.replaceAll(",", " ");
-      this.query = this.query.select(fields);
-    } else {
-      this.query = this.query.select("-__v");
-    }
+    this.query = this.query.select("nickName gameScore counter");
     return this;
   }
 

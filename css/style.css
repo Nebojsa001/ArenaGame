@@ -1,11 +1,31 @@
-@font-face {
+/* @font-face {
   font-family: "HeadingNow56Bold";
   src: url("../fonts/HeadingNowTrial-56Bold.ttf"),
     url("../fonts/HeadingNowTrial-56BoldItalic.ttf");
+} */
+@font-face {
+  font-family: "Montserrat";
+  /* src: url('putanja/do/fonta/montserrat-regular.ttf') format('truetype'); promijenite putanju i naziv datoteke prema stvarnoj lokaciji vaših fontova */
+  src: url("../fonts/Montserat/Montserrat-Regular.ttf") format("truetype"); /* promijenite putanju i naziv datoteke prema stvarnoj lokaciji vaših fontova */
+  font-weight: normal;
+  font-style: normal;
 }
 * {
   font-family: "HeadingNow56Bold";
   text-align: center;
+}
+
+.text-area {
+  width: 40%;
+  color: white;
+}
+
+.text-area p span {
+  font-family: "Roboto", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  line-height: inherit;
+  vertical-align: middle;
 }
 
 .container {
@@ -159,6 +179,10 @@ footer div a {
   }
   footer div svg {
     margin-right: 10px;
+  }
+  .text-area {
+    width: 90%;
+    color: white;
   }
 }
 

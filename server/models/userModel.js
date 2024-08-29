@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "A user must have a last name"],
     trim: true,
   },
+  nickName: {
+    type: String,
+    unique: true,
+  },
   email: {
     type: String,
     required: [true, "A user must have a mail"],
@@ -46,6 +50,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  counter: {
+    type: Number,
+    default: 0,
+  },
   password: {
     type: String,
     required: false,
@@ -64,6 +72,13 @@ userSchema.methods.correctPassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+userSchema.pre("save", function (next) {
+  this.nickName = `ArenaPlayer_${this.firstName}${Date.now()
+    .toString()
+    .slice(-5)}`;
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 
