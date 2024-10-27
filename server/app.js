@@ -1,21 +1,21 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
-
+const bodyParser = require("body-parser");
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const helmet = require("helmet");
 const userRouter = require("./routes/userRoutes");
 
-// const corsOptions = {
-//   origin: "http://127.0.0.1:5500",
-//   //origin: "https://arena-cloud-game.netlify.app",
-//   //origin: "https://arenacloudgame.netlify.app",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   allowedHeaders: "Content-Type,Authorization",
-// };
-
-app.use(express.json());
+const app = express();
 app.use(cors());
+app.use("/api/v1/users", mongoSanitize());
+app.use("/api/v1/users", xss());
+app.use("/api/v1/users", helmet());
+app.use(rateLimit({ windowMs: 3 * 60 * 1000, max: 3000 })); //100 zahtjeva u 3 minute
 
 console.log(process.env.NODE_DEV);
+app.use(bodyParser.json({ limit: "20mb" }));
 
 app.use(express.static(`${__dirname}/..`));
 //Routes

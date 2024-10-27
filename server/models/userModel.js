@@ -23,10 +23,6 @@ const userSchema = new mongoose.Schema({
     unique: [true, "A user mail must be unique"],
     validate: [validator.isEmail, "Neispravna email adresa"],
   },
-  password: {
-    type: String,
-    required: false,
-  },
   phone: {
     type: String,
     required: [true, "A user must have a phone number"],
@@ -61,15 +57,21 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-//ova linija koda treba samo kad zelimo dodati admina i ne koristi se kod obicnih korisnika bez sifre
+//ova linija koda treba samo kad zelimo dodati admina i ne koristi se kod obicnih korisnika bez sifre (61-64)
 // userSchema.pre("save", async function (next) {
 //   this.password = await bcrypt.hash(this.password, 12);
 // });
+
 userSchema.methods.correctPassword = async function (
-  // PROVJERA PASSWORD
   candidatePassword,
   userPassword
 ) {
+  if (
+    typeof candidatePassword !== "string" ||
+    typeof userPassword !== "string"
+  ) {
+    return "Lozinka nije tacna";
+  }
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 

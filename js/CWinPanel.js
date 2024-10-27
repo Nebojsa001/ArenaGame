@@ -258,11 +258,10 @@ function CWinPanel(oSpriteBg) {
     // s_oGame.onExit();
     const scorePage = document.querySelector("#score-page");
     scorePage.classList.add("visible");
-    console.log(token);
 
     try {
       const response = await fetch(
-        "https://www.topicsplanet.com/api/v1/users/update-score",
+        "http://localhost:3000/api/v1/users/update-score",
         {
           method: "PATCH",
           headers: {
@@ -275,7 +274,6 @@ function CWinPanel(oSpriteBg) {
       if (response.status === 200) {
         const data = await response.json();
         playerId = data._id;
-        console.log(data);
       } else {
         console.error("Server error:", response.statusText);
       }
@@ -285,7 +283,7 @@ function CWinPanel(oSpriteBg) {
 
     try {
       const response = await fetch(
-        `https://www.topicsplanet.com/api/v1/users/player-position/${playerId}`,
+        `http://localhost:3000/api/v1/users/player-position/${playerId}`,
         {
           method: "GET",
           headers: {
@@ -296,8 +294,6 @@ function CWinPanel(oSpriteBg) {
       );
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data);
-        console.log(data.playerPosition);
         playerPositionIndex.innerHTML = `<span style="font-family: Arial, sans-serif;">${data.playerPosition}. </span> mestu`;
       } else {
         console.error("Server error:", response.statusText);

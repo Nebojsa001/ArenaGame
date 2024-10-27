@@ -1,11 +1,7 @@
-console.log("pozdrav");
-let counter = 0;
-let intervalId;
-
-function startCounting(){
-  intervalId = setInterval(function(){
-    counter += .1;
-  },100)
+function startCounting() {
+  intervalId = setInterval(function () {
+    counter += 0.1;
+  }, 100);
 }
 
 function stopCounting() {
@@ -154,7 +150,7 @@ function CMenu() {
   this._onButPlayRelease = function () {
     this.unload();
     console.log("Brojanje pokrenuto");
-    startCounting()
+    startCounting();
     s_oMain.gotoGame();
   };
 
@@ -182,7 +178,6 @@ function CMenu() {
 
     sizeHandler();
   };
-
 
   s_oMenu = this;
 

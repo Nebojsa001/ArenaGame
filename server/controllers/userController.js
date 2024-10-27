@@ -32,7 +32,6 @@ const createSendToken = (user, statusCode, res) => {
 exports.checkObjectCount = (req, res, next) => {
   try {
     const data = req.body;
-
     if (data.length > 1) {
       return res
         .status(400)
@@ -41,7 +40,9 @@ exports.checkObjectCount = (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(500).json({ error: "Greška na serveru." });
+    return res
+      .status(500)
+      .json({ error: "Greška na serveru.", error: error.message });
   }
 };
 //middleware end
@@ -115,6 +116,8 @@ exports.playerPosition = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
+  console.log("pozdrav");
+
   try {
     const newUser = await User.create({
       firstName: req.body.firstName,
@@ -134,23 +137,26 @@ exports.createUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  //1
-  if (!email && !password) {
-    return res.status(400).json({
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return next(new appError("Proveri email i password", 400));
+    }
+    //2
+    const user = await User.findOne({ email }).select("+password");
+    //   compare pass = encrypted pass
+    //   const correct = await user.correctPassword(password, user.password);
+    if (!user || !(await user.correctPassword(password, user.password))) {
+      return next(new appError("Pogrešan email ili password", 401));
+    }
+    //3
+    createSendToken(user, 200, res);
+  } catch (err) {
+    res.status(400).json({
       status: "fail",
-      message: "Proveri email ili password1",
+      error: err,
     });
   }
-  //2
-  const user = await User.findOne({ email }).select("+password");
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    return res.status(400).json({
-      status: "fail",
-      message: "Proveri email ili password",
-    });
-  }
-  createSendToken(user, 201, res);
 };
 
 exports.adminLogin = async (req, res) => {
