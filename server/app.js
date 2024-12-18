@@ -5,17 +5,20 @@ const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const helmet = require("helmet");
+
 const userRouter = require("./routes/userRoutes");
 
 const app = express();
-app.use(cors());
-app.use("/api/v1/users", mongoSanitize());
+// Sigurnosni middleware-i
+app.use(helmet()); // HTTP sigurnosna zaglavlja
+app.use(cors()); // CORS podrška
+app.use(bodyParser.json({ limit: "20mb" }));
+app.use(mongoSanitize());
 app.use("/api/v1/users", xss());
-app.use("/api/v1/users", helmet());
+
 app.use(rateLimit({ windowMs: 3 * 60 * 1000, max: 3000 })); //100 zahtjeva u 3 minute
 
 console.log(process.env.NODE_DEV);
-app.use(bodyParser.json({ limit: "20mb" }));
 
 app.use(express.static(`${__dirname}/..`));
 //Routes

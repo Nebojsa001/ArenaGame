@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const sendEmail = require("../utils/sendEmail");
 const User = require("../models/userModel");
-const { error } = require("console");
 
 //generisanje tokena
 const signToken = (id) => {
@@ -116,15 +115,13 @@ exports.playerPosition = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  console.log("pozdrav");
-
   try {
     const newUser = await User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
-      //password: req.body.password, //dodaj samo kad kreiras admina
+      password: req.body.password, //dodaj samo kad kreiras admina
     });
 
     createSendToken(newUser, 201, res);
@@ -144,10 +141,12 @@ exports.login = async (req, res) => {
     }
     //2
     const user = await User.findOne({ email }).select("+password");
+
     //   compare pass = encrypted pass
-    //   const correct = await user.correctPassword(password, user.password);
     if (!user || !(await user.correctPassword(password, user.password))) {
-      return next(new appError("Pogrešan email ili password", 401));
+      return res.status(401).json({
+        message: "Pogrešan email ili password",
+      });
     }
     //3
     createSendToken(user, 200, res);

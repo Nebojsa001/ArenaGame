@@ -61,17 +61,11 @@ const userSchema = new mongoose.Schema({
 // userSchema.pre("save", async function (next) {
 //   this.password = await bcrypt.hash(this.password, 12);
 // });
-
 userSchema.methods.correctPassword = async function (
+  // PROVJERA PASSWORD
   candidatePassword,
   userPassword
 ) {
-  if (
-    typeof candidatePassword !== "string" ||
-    typeof userPassword !== "string"
-  ) {
-    return "Lozinka nije tacna";
-  }
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
