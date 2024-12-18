@@ -10,7 +10,18 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 // Sigurnosni middleware-i
-app.use(helmet()); // HTTP sigurnosna zaglavlja
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https://arenacloudtv.com"], //dozvola za slike sa ovog urla
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  })
+);
 app.use(cors()); // CORS podrška
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(mongoSanitize());
