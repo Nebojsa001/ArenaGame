@@ -278,7 +278,7 @@ function CWinPanel(oSpriteBg) {
         console.error("Server error:", response.statusText);
       }
     } catch (err) {
-      console.error(error);
+      console.error(err);
     }
 
     try {

@@ -1,3 +1,5 @@
+let counter = 0;
+let intervalId;
 function startCounting() {
   intervalId = setInterval(function () {
     counter += 0.1;
